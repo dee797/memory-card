@@ -69,7 +69,7 @@ const App = () => {
       </header>
 
       <div className="grid grid-cols-5 grid-rows-3 max-w-full mx-5 my-16 gap-y-14">
-        <CardContext.Provider value={{setCardMap, setCurrentScore, setBestScore, currentScore, cardData, cardMap}} >
+        <CardContext.Provider value={{setCardMap, setCurrentScore, setBestScore, currentScore, cardData }} >
           {Array.from(cardMap).map((item) => {
             return <Card item={items.data[item[0]]} itemNum={item[0]} wasSelected={item[1].wasSelected} key={item[0]}/>
           })}

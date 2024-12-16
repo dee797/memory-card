@@ -3,7 +3,7 @@ import { CardContext } from "./App";
 
 
 const Card = ({ item, itemNum, wasSelected }) => {
-  const { setCardMap, setCurrentScore, setBestScore, currentScore, cardData, cardMap } = useContext(CardContext);
+  const { setCardMap, setCurrentScore, setBestScore, currentScore, cardData } = useContext(CardContext);
 
   return (
 
