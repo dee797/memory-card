@@ -2,13 +2,12 @@
 
 exports[`App component > renders magnificent monkeys 1`] = `
 <div>
-  <button
-    type="button"
+  <div
+    class="h-screen w-screen flex items-center justify-center"
   >
-    Click Me
-  </button>
-  <h1>
-    Magnificent Monkeys
-  </h1>
+    <div
+      class="loader mx-auto"
+    />
+  </div>
 </div>
 `;
