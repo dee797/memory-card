@@ -42,7 +42,10 @@ const App = () => {
     [68, {wasSelected: false}],
     [69, {wasSelected: false}]];
 
-  const [ cardMap, shuffleCardMap ] = useState(new Map(cardData));
+  const [ cardMap, setCardMap ] = useState(new Map(cardData));
+  const [ currentScore, setCurrentScore ] = useState(0);
+  const [ bestScore, setBestScore ] = useState(0);
+
 
   if (loading) return (<div className="h-screen w-screen flex items-center justify-center"><div className="loader mx-auto"></div></div>);
   if (error) return (<p className="h-screen w-screen text-center">A network error was encountered.</p>);
@@ -53,8 +56,8 @@ const App = () => {
         <div className="mx-40 py-6 max-w-full flex flex-col sm:flex-row sm:items-center sm:justify-between ">
           <span className="font-bold text-4xl">Breath of the Wild: Memory Card Game</span>
           <div className="flex sm:justify-end gap-20 text-2xl">
-            <span>Score: {}</span>
-            <span>Best Score: {}</span>
+            <span>Score: {currentScore}</span>
+            <span>Best Score: {bestScore}</span>
           </div>
         </div>
         <div className="flex flex-col mx-40 pb-6 gap-x-2 text-xl">
@@ -66,7 +69,7 @@ const App = () => {
       </header>
 
       <div className="grid grid-cols-5 grid-rows-3 max-w-full mx-5 my-16 gap-y-14">
-        <CardContext.Provider value={{shuffleCardMap}} >
+        <CardContext.Provider value={{setCardMap, setCurrentScore, setBestScore, currentScore, cardData, cardMap}} >
           {Array.from(cardMap).map((item) => {
             return <Card item={items.data[item[0]]} itemNum={item[0]} wasSelected={item[1].wasSelected} key={item[0]}/>
           })}
