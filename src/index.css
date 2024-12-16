@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 
+
 :root {
   font-family: "Cormorant Unicase", serif;
   line-height: 1.5;
@@ -19,6 +20,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  overflow-anchor: none;
 }
 
 a {
