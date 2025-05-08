@@ -72,12 +72,12 @@ const App = () => {
       <header className="p-8 bg-sky-900 drop-shadow-2xl text-white">
         <div className="mx-40 py-6 max-w-full flex flex-col sm:flex-row sm:items-center sm:justify-between ">
           <span className="font-bold text-4xl">Breath of the Wild: Memory Card Game</span>
-          <div className="flex sm:justify-end gap-20 text-2xl">
+          <div id="scores" className="flex sm:justify-end gap-20 text-2xl">
             <span>Score: {currentScore}</span>
             <span>Best Score: {bestScore}</span>
           </div>
         </div>
-        <div className="flex flex-col mx-40 pb-6 gap-x-2 text-xl">
+        <div id="instructions" className="flex flex-col mx-40 pb-6 gap-x-2 text-xl">
           <p className="font-bold text-2xl">How to Play:</p>
           <p>1. Choose from any of the magical weapons below. Make sure to remember which one you picked.</p>
           <p>2. After the weapons have shuffled, pick a different weapon. If you pick one that you've already selected before, the game will reset.</p>
@@ -85,7 +85,7 @@ const App = () => {
         </div>
       </header>
 
-      <div className="grid grid-cols-5 grid-rows-3 max-w-full mx-5 my-16 gap-y-14">
+      <div id="grid" className="grid max-w-full mx-5 my-16 gap-y-14 gap-x-5">
         <CardContext.Provider value={{setItems, setCurrentScore, setBestScore, currentScore, defaultItems}}>
           {items.map((item) => {
             return <Card item={item} key={item.id}/>
