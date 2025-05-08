@@ -1,50 +1,67 @@
 import { useState, useEffect, createContext } from "react";
 import Card from "./Card";
 
-const useFetchItems = () => {
-  const [items, setItems] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+const useFetchItems = (setItems, setError, setLoading, setDefaultItems) => {
+  const itemData = [];
 
   useEffect(() => {
     fetch("https://botw-compendium.herokuapp.com/api/v3/compendium/category/equipment", { mode: "cors" })
-      .then((response) => {
-        if (response.status >= 400) {
+      .then((res) => {
+        if (res.status >= 400) {
           throw new Error("server error");
         }
-        return response.json();
+
+        return res.json();
       })
-      .then((response) => {
-        setItems(response);
+      .then((res) => {
+        const weapons = [
+          'thunderblade',
+          'great thunderblade',
+          'lightning rod',
+          'thunderstorm rod',
+          'frostblade',
+          'great frostblade',
+          'ice rod',
+          'blizzard rod',
+          'flameblade',
+          'great flameblade',
+          'fire rod',
+          'meteor rod'
+        ]
+
+        for (const item of res.data) {
+          if (weapons.includes(item.name)) {
+            item.wasSelected = false;
+            itemData.push(item);
+          }
+
+          if (itemData.length === 12) {
+            break;
+          }
+        }
+
+        setDefaultItems(structuredClone(itemData));
+        setItems(itemData);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
 
-  return { items, error, loading };
 };
 
 export const CardContext = createContext(null)
 
 const App = () => {
-  const { items, error, loading } = useFetchItems();
-  const cardData = [
-    [20, {wasSelected: false}], 
-    [21, {wasSelected: false}],
-    [22, {wasSelected: false}],
-    [35, {wasSelected: false}],
-    [36, {wasSelected: false}],
-    [37, {wasSelected: false}],
-    [38, {wasSelected: false}],
-    [39, {wasSelected: false}],
-    [40, {wasSelected: false}],
-    [67, {wasSelected: false}],
-    [68, {wasSelected: false}],
-    [69, {wasSelected: false}]];
+  // defaultItems don't change, they're used to reset game back to its initial state
+  const [defaultItems, setDefaultItems] = useState(null);
+  const [items, setItems] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [ cardMap, setCardMap ] = useState(new Map(cardData));
-  const [ currentScore, setCurrentScore ] = useState(0);
-  const [ bestScore, setBestScore ] = useState(0);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
+  useFetchItems(setItems, setError, setLoading, setDefaultItems);
 
 
   if (loading) return (<div className="h-screen w-screen flex items-center justify-center"><div className="loader mx-auto"></div></div>);
@@ -69,9 +86,9 @@ const App = () => {
       </header>
 
       <div className="grid grid-cols-5 grid-rows-3 max-w-full mx-5 my-16 gap-y-14">
-        <CardContext.Provider value={{setCardMap, setCurrentScore, setBestScore, currentScore, cardData }} >
-          {Array.from(cardMap).map((item) => {
-            return <Card item={items.data[item[0]]} itemNum={item[0]} wasSelected={item[1].wasSelected} key={item[0]}/>
+        <CardContext.Provider value={{setItems, setCurrentScore, setBestScore, currentScore, defaultItems}}>
+          {items.map((item) => {
+            return <Card item={item} key={item.id}/>
           })}
         </CardContext.Provider>
       </div>
